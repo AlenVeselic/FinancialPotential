@@ -1,0 +1,39 @@
+@charset "UTF-8";
+/**
+ * Description
+ * @authors Your Name (you@example.org)
+ * @date    2021-03-16 12:08:42
+ * @version 1.0.0
+ */
+
+ body{
+     display:flex;
+     flex-direction: column;
+ }
+
+ #head > button{
+     flex-grow: 1;
+ }
+
+ #head > p{
+     flex-grow: 2;
+ }
+
+
+#head{
+    display:flex;
+    flex-direction: row;
+}
+
+#content{
+    display:flex;
+    flex-direction: row;
+}
+
+#content > .side{
+    flex-grow: 1;
+}
+
+#content > p{
+    flex-grow:2;
+}
