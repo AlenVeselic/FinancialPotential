@@ -25,15 +25,15 @@
     flex-direction: row;
 }
 
-#content{
+#middle{
     display:flex;
     flex-direction: row;
 }
 
-#content > .side{
+#middle > .side{
     flex-grow: 1;
 }
 
-#content > p{
+#middle > #content{
     flex-grow:2;
 }

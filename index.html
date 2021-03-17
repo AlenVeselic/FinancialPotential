@@ -5,21 +5,22 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <title>Examples</title>
 <meta name='viewport' content='width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no'/>
-<meta name="description" content="">
+<meta name="description" content="A small inventory keeping web app">
 <meta name="keywords" content="">
 <link href="styles/style.css" rel="stylesheet" type="text/css">
 </head>
 <body>
     <div id="head">
-        <button><</button>
+        <button id="dateBack"><</button>
         <p id="date">some date</p>
-        <button>></button>
+        <button id="dateForward">></button>
     </div>
-    <div id="content">
+    <div id="middle">
         <div class="side">
 
         </div>
-            <p>Some transactions</p>
+        <div id="content">
+        </div>
         <div class="side">
             
         </div>
@@ -27,6 +28,8 @@
     </div>
 
     <script src="scripts/script.js" ></script>
+    <script src="scripts/dataScript.js">
+    </script>
 
 </body>
 </html>
