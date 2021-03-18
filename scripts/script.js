@@ -31,7 +31,7 @@ function genTrans(){
     data = JSON.parse(rawData)
     
     
-    addButton = document.getElementById('addTrans')
+    addButton = document.getElementById('addTran')
 
     for(i=0; i < data['transactions'].length; i++){
         curItem = []
@@ -64,15 +64,32 @@ forwardButton.onclick = function(){
     dateForward()
 }
 
+function compareDateWithPresent(date){
+    present = new Date()
+    flags = 0
+
+    if(present.getDate() == date.getDate()) flags += 1;
+    if(present.getMonth() == date.getMonth()) flags += 1;
+    if(present.getFullYear() == date.getFullYear()) flags += 1;
+
+    if(flags == 3) return true;
+    return false;
+}
+
 function setDateHeader(){
 curDate = new Date()
-if(curDate.getDate() != 1){
+
 curDate.setDate(curDate.getDate() + daysBack)
-}
 
 currentContents = document.getElementById('content')
 
-document.getElementById('date').innerHTML = curDate.getDate() + ". " + curDate.getMonth() + ". " + curDate.getFullYear()
+if (compareDateWithPresent(curDate)){
+    document.getElementById('dateForward').disabled = true
+}else{
+    document.getElementById('dateForward').disabled = false
+}
+
+document.getElementById('date').innerHTML = curDate.getDate() + ". " + (curDate.getMonth() + 1) + ". " + curDate.getFullYear()
 genTrans()
 }
 
@@ -105,11 +122,8 @@ currentContents.appendChild(addButton);
 function openInput(buttEl){
 
     inputDiv = document.createElement('div')
-    inputDiv.style.height = "300px"
-    inputDiv.style.width = "300px"
-    inputDiv.style.backgroundColor = "gray"
-    inputDiv.style.position = "absolute"
-    inputDiv.style.left = "50%"
+    inputDiv.classList.add('promptWindow')
+    
 
     cancelButton = document.createElement('button')
     cancelButton.innerHTML = "Back"
@@ -118,14 +132,70 @@ function openInput(buttEl){
         inputDiv.remove();
     }
 
-    cat = "Gas"
-    desc = "12L"
-    amount = 24.32
-    inputDiv.innerHTML += "Current hardcoded values: " + cat + " " + desc + " " + amount.toString()
+    transactionForm = document.createElement('form')
+    transactionForm.name = "inputForm"
+
+    categorySelection = document.createElement('select')
+    categorySelection.name = "categories"
+    categorySelection.onblur = function () {
+        document.getElementsByClassName('promptWindow')[0].appendChild(document.createTextNode(this.value))
+    }
+
+    // temporary hardcoded options
+    selectGas = document.createElement('option')
+    selectGas.value = "gas"
+    selectGas.innerText = "Gas"
+
+    selectGroceries = document.createElement('option')
+    selectGroceries.value = "grocery"
+    selectGroceries.innerText = "Groceries"
+
+    selectBills = document.createElement('option')
+    selectBills.value = "bill"
+    selectBills.innerText = "Bills"
+
+
+    categorySelection.appendChild(selectGas)
+    categorySelection.appendChild(selectGroceries)
+    categorySelection.appendChild(selectBills)
+
+    transactionForm.appendChild(categorySelection)
+
+    descEntry = document.createElement('input')
+    descEntry.name = "description"
+    descEntry.type = "text"
+    descEntry.onblur = function () {
+        document.getElementsByClassName('promptWindow')[0].appendChild(document.createTextNode(this.value))
+    }
+
+    transactionForm.appendChild(descEntry)
+
+    amountEntry = document.createElement('input')
+    amountEntry.name = "amount"
+    amountEntry.type = "number"
+    amountEntry.step = "0.01"
+    amountEntry.onblur = function () {
+        document.getElementsByClassName('promptWindow')[0].appendChild(document.createTextNode(this.value))
+    }
+    
+    transactionForm.appendChild(amountEntry)
+
+    /*
+    cat = document.forms["inputForm"]["categories"].value
+    desc = document.forms["inputForm"]["description"].value
+    amount = document.forms["inputForm"]["amount"].value    
+    */
+    inputDiv.appendChild(transactionForm)
+
+    //inputDiv.innerHTML += "Current values: " + cat + " " + desc + " " + amount.toString()
 
     applyButton = document.createElement('button')
     applyButton.innerHTML = "Add"
     applyButton.onclick = function(){
+        cat = document.forms["inputForm"]["categories"].value
+        desc = document.forms["inputForm"]["description"].value
+        amount = document.forms["inputForm"]["amount"].value  
+
         data = [cat, desc, amount]
         createTransaction(buttEl ,data)
         inputDiv.remove()
@@ -158,17 +228,27 @@ function generateTransactionDiv(buttEl, data){
 
     newTransaction = document.createElement('div')
     newTransaction.classList.add('transaction')
-    newTransaction.style.height = "30px"
-    newTransaction.style.width = "100%"
     newTransaction.style.backgroundColor = "#" + bkgColor()
 
     categoryNode = document.createTextNode(data[0])
     descNode = document.createTextNode(data[1])
     amountNode = document.createTextNode(data[2].toString() + "€")
 
-    newTransaction.appendChild(categoryNode)
-    newTransaction.appendChild(descNode)
-    newTransaction.appendChild(amountNode)
+    categoryP = document.createElement('p')
+    categoryP.appendChild(categoryNode)
+    categoryP.classList.add('cat')
+
+    descriptionP = document.createElement('p')
+    descriptionP.appendChild(descNode)
+    descriptionP.classList.add('desc')
+
+    amountP = document.createElement('p')
+    amountP.appendChild(amountNode)
+    amountP.classList.add('amount')
+
+    newTransaction.appendChild(categoryP)
+    newTransaction.appendChild(descriptionP)
+    newTransaction.appendChild(amountP)
 
     transactionDate = document.getElementById('date').innerText
 

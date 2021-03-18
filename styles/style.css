@@ -25,15 +25,47 @@
     flex-direction: row;
 }
 
+.promptWindow{
+    height : 300px;
+    width : 300px;
+    background-color : gray;
+    position : absolute;
+    align-self: center;
+}
+
+
 #middle{
     display:flex;
     flex-direction: row;
 }
 
-#middle > .side{
+.transaction{
+    display:flex;
+    flex-direction: row;
+    height: 30px;
+    width: 100%;
+}
+
+.cat{
+    flex-grow: 2;
+}
+
+.desc{
+    flex-grow: 10; 
+}
+
+.amount{
     flex-grow: 1;
+    text-align: end;
+}
+
+
+
+#middle > .side{
+    flex-grow: 1.125;
 }
 
 #middle > #content{
     flex-grow:2;
 }
+
