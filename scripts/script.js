@@ -128,7 +128,6 @@ function openInput(buttEl){
     cancelButton = document.createElement('button')
     cancelButton.innerHTML = "Back"
     cancelButton.onclick = function(){
-        window.alert("You cancelled the input.")
         inputDiv.remove();
     }
 
@@ -137,11 +136,21 @@ function openInput(buttEl){
 
     categorySelection = document.createElement('select')
     categorySelection.name = "categories"
-    categorySelection.onblur = function () {
-        document.getElementsByClassName('promptWindow')[0].appendChild(document.createTextNode(this.value))
+
+    // temporary hardcoded category options
+
+    categoryList = localStorage.getItem('categories').split(",")
+
+    if(categoryList.length != 0){
+        for(category of categoryList){
+            newOption = document.createElement('option')
+            newOption.value = category
+            newOption.innerText = category
+            categorySelection.appendChild(newOption)
+        }
     }
 
-    // temporary hardcoded options
+
     selectGas = document.createElement('option')
     selectGas.value = "gas"
     selectGas.innerText = "Gas"
@@ -164,9 +173,6 @@ function openInput(buttEl){
     descEntry = document.createElement('input')
     descEntry.name = "description"
     descEntry.type = "text"
-    descEntry.onblur = function () {
-        document.getElementsByClassName('promptWindow')[0].appendChild(document.createTextNode(this.value))
-    }
 
     transactionForm.appendChild(descEntry)
 
@@ -174,17 +180,32 @@ function openInput(buttEl){
     amountEntry.name = "amount"
     amountEntry.type = "number"
     amountEntry.step = "0.01"
-    amountEntry.onblur = function () {
-        document.getElementsByClassName('promptWindow')[0].appendChild(document.createTextNode(this.value))
-    }
     
     transactionForm.appendChild(amountEntry)
 
     /*
     cat = document.forms["inputForm"]["categories"].value
     desc = document.forms["inputForm"]["description"].value
-    amount = document.forms["inputForm"]["amount"].value    
+    amount = document.forms["inputForm"]["amount"].value  
     */
+
+    categoryText = document.createElement("input")
+    categoryText.type = "text"
+    categoryText.name = "newCat"
+
+    transactionForm.appendChild(categoryText)
+
+    addCatButton = document.createElement('button')
+        addCatButton.innerText = "Add Category"
+        addCatButton.onclick = function(){
+            newCategory = document.forms["inputForm"]["newCat"].value
+            addCategoryToStorage(newCategory)
+        }
+    
+
+
+
+
     inputDiv.appendChild(transactionForm)
 
     //inputDiv.innerHTML += "Current values: " + cat + " " + desc + " " + amount.toString()
@@ -201,9 +222,15 @@ function openInput(buttEl){
         inputDiv.remove()
     }
 
+    
+
 
 inputDiv.appendChild(cancelButton)
+
 inputDiv.appendChild(applyButton)
+
+inputDiv.appendChild(addCatButton)
+
 
 document.body.appendChild(inputDiv)
 
@@ -220,7 +247,21 @@ function createTransaction(buttEl, data){
 
 }
 
+function getElIndex(nList, el){
 
+    index = 0
+
+for(element of nList){
+
+    if(element == el){
+            return index
+        }
+    index++
+    }
+
+
+
+}
 
 
 
@@ -246,9 +287,27 @@ function generateTransactionDiv(buttEl, data){
     amountP.appendChild(amountNode)
     amountP.classList.add('amount')
 
+    deleteButton = document.createElement('button')
+    deleteButton.innerText = "X"
+    deleteButton.onclick = function (){
+        transactionArray = document.getElementsByClassName('transaction')
+        itemIndex = getElIndex(transactionArray, this.parentElement)
+        itemDate = document.getElementById('date').innerText
+
+        removeTransactionFromStorage(itemDate, itemIndex)
+
+        this.parentElement.remove()
+
+
+    }
+
+    
     newTransaction.appendChild(categoryP)
     newTransaction.appendChild(descriptionP)
     newTransaction.appendChild(amountP)
+    newTransaction.appendChild(deleteButton)
+
+
 
     transactionDate = document.getElementById('date').innerText
 

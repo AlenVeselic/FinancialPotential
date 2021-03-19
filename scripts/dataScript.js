@@ -9,6 +9,10 @@ if(localStorage.getItem("transactionDates") == null){
     transactionDates = []
     localStorage.setItem("transactionDates", transactionDates)
 }
+if(localStorage.getItem('categories') == null){
+    categories = []
+    localStorage.setItem("categories", categories)
+}
 
 function addTransactionToStorage(date, data){
 
@@ -24,20 +28,78 @@ function addTransactionToStorage(date, data){
     
     itemList["transactions"].push(item)
 
-    checkDate(date)
+    checkDate(date, "add")
     localStorage.setItem(date, JSON.stringify(itemList))
 
 
 }
 
-function checkDate(date){
+function checkDate(date, modType){
+
 
     if(localStorage.getItem("transactionDates") == "" || localStorage.getItem("transactionDates") == null){
         transactionDates = []
         }else{
         transactionDates = localStorage.getItem("transactionDates").split(",")
         }
-        if(!transactionDates.includes(date)) transactionDates.push(date)
+
+        
+
+        if(!transactionDates.includes(date)){
+            if(modType == "add"){
+                transactionDates.push(date)
+            }else if(modType == "del"){
+                return false;
+            }
+        }else if(transactionDates.includes(date) && modType == "del"){
+                return true;
+        }
+
 
         localStorage.setItem("transactionDates",transactionDates)
+}
+
+function removeTransactionFromStorage(date, transactionIndex){
+    if(checkDate(date, "del")){
+        data = JSON.parse(localStorage.getItem(date))
+
+        delete data["transactions"][transactionIndex]
+
+        newTransactionList = []
+
+        while(data["transactions"].length != 0){
+            if(data["transactions"][0] != null){
+            newTransactionList.push(data["transactions"].shift())
+            }else{
+                data["transactions"].shift()
+            }
+        }
+
+        data["transactions"] = newTransactionList
+
+        if(data["transactions"].length != 0){
+            localStorage.setItem(date, JSON.stringify(data))
+        }else{
+            localStorage.removeItem(date)
+        }
+
+    }
+
+}
+
+function addCategoryToStorage(newCat){
+
+    categoryList = localStorage.getItem('categories').split(',')
+
+    if(!categoryList.includes(newCat)){
+        if(categoryList[0] == ""){
+            categoryList[0] = newCat
+        }else{
+        categoryList.push(newCat)
+        }
+
+    }
+
+    localStorage.setItem('categories', categoryList)
+
 }
