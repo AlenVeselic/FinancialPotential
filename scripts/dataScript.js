@@ -10,8 +10,8 @@ if(localStorage.getItem("transactionDates") == null){
     localStorage.setItem("transactionDates", transactionDates)
 }
 if(localStorage.getItem('categories') == null){
-    categories = []
-    localStorage.setItem("categories", categories)
+    categories = {}
+    localStorage.setItem("categories", JSON.stringify(categories))
 }
 
 function addTransactionToStorage(date, data){
@@ -80,6 +80,11 @@ function removeTransactionFromStorage(date, transactionIndex){
         if(data["transactions"].length != 0){
             localStorage.setItem(date, JSON.stringify(data))
         }else{
+            allDates = localStorage.getItem("transactionDates").split(',')
+            allDates.splice(allDates.indexOf(date), 1)
+
+            localStorage.setItem("transactionDates", allDates)
+
             localStorage.removeItem(date)
         }
 
@@ -87,19 +92,27 @@ function removeTransactionFromStorage(date, transactionIndex){
 
 }
 
-function addCategoryToStorage(newCat){
+function addCategoryToStorage(newCat, catColor){
 
-    categoryList = localStorage.getItem('categories').split(',')
+    categoryList = JSON.parse(localStorage.getItem('categories'))
 
-    if(!categoryList.includes(newCat)){
-        if(categoryList[0] == ""){
-            categoryList[0] = newCat
-        }else{
-        categoryList.push(newCat)
-        }
-
+    if(!Object.keys(categoryList).includes(newCat)){
+        categoryList[newCat] = catColor
     }
 
-    localStorage.setItem('categories', categoryList)
+    localStorage.setItem('categories', JSON.stringify(categoryList))
+
+}
+
+function removeCategoryFromStorage(category){
+
+    categoryList = JSON.parse(localStorage.getItem('categories'))
+
+    if(Object.keys(categoryList).includes(category)){
+        delete categoryList[category]
+    }
+
+    localStorage.setItem('categories', JSON.stringify(categoryList))
+
 
 }

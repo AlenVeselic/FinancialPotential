@@ -26,13 +26,22 @@
 }
 
 .promptWindow{
-    height : 300px;
-    width : 300px;
+    display:flex;
+    flex-direction: row;
+    min-height : 300px;
+    min-width : 300px;
     background-color : gray;
     position : absolute;
     align-self: center;
 }
 
+.inputOptions{
+    display: none;
+}
+
+.show{
+    display:block;
+}
 
 #middle{
     display:flex;
@@ -42,8 +51,13 @@
 .transaction{
     display:flex;
     flex-direction: row;
+    line-height: 30px;
     height: 30px;
     width: 100%;
+}
+.transaction p{
+    margin:0;
+    padding-left: 10px;
 }
 
 .cat{
@@ -67,5 +81,6 @@
 
 #middle > #content{
     flex-grow:2;
+    background-color: rgb(190, 182, 182);
 }
 
