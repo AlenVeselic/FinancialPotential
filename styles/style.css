@@ -7,22 +7,32 @@
  */
 
  body{
-     display:flex;
-     flex-direction: column;
+    margin: 0;
+    padding:0;
+
+    display:flex;
+    flex-direction: column;
  }
 
  #head > button{
-     flex-grow: 1;
+
+    flex-grow: 1;
  }
 
  #head > p{
-     flex-grow: 2;
+
+    flex-grow: 2;
  }
 
 
 #head{
+    
     display:flex;
     flex-direction: row;
+}
+
+#date{
+    text-align: center;
 }
 
 .promptWindow{
@@ -46,41 +56,71 @@
 #middle{
     display:flex;
     flex-direction: row;
+    min-height:90vh;
 }
 
 .transaction{
-    display:flex;
-    flex-direction: row;
-    line-height: 30px;
+    /*display:flex;
+    flex-direction: row;*/
+    
     height: 30px;
     width: 100%;
 }
 .transaction p{
     margin:0;
+    padding:0;
+    display: inline-block;
     padding-left: 10px;
+
+    
+    white-space: nowrap;
+    overflow:hidden;
+    text-overflow: ellipsis;
 }
 
 .cat{
-    flex-grow: 2;
+    width: 10%;
 }
 
 .desc{
-    flex-grow: 10; 
+    width:20%;
+    text-align: center;
 }
 
-.amount{
-    flex-grow: 1;
+p.amount{
+    width:10%;
     text-align: end;
+    padding-right: 30px;
+}
+
+.tranData{
+    display:inline-block;
+    width:90%;
+    height: 100%;
+    line-height: 30px;
+}
+
+
+.delButton{
+    height:100%;
+    width:10%;
+    position:relative;
+    bottom: 11px;
 }
 
 
 
 #middle > .side{
-    flex-grow: 1.125;
+    flex-grow: 1;
 }
 
 #middle > #content{
-    flex-grow:2;
+    flex-grow:1;
+    width:26.1vw;
     background-color: rgb(190, 182, 182);
 }
 
+#addTran{
+    width: 100%;
+    height:60px;
+}

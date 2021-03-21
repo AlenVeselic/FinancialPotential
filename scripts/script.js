@@ -95,6 +95,7 @@ genTrans()
 
 setDateHeader()
 
+//creates the add transaction button
 
 addButton = document.createElement('button')
 addButton.innerHTML = "+"
@@ -229,6 +230,8 @@ function openInput(buttEl){
 
     }
 
+    // initializes the category submit button
+
     addCatButton = document.createElement('button')
     addCatButton.innerText = "Add Category"
     addCatButton.onclick = function(){
@@ -353,12 +356,17 @@ function generateTransactionDiv(buttEl, data){
     descriptionP.appendChild(descNode)
     descriptionP.classList.add('desc')
 
+    //creates the paragraph element that would display the transaction's amount
+
     amountP = document.createElement('p')
     amountP.appendChild(amountNode)
     amountP.classList.add('amount')
 
+    //create button that deletes the current transaction and it's div
+
     deleteButton = document.createElement('button')
     deleteButton.innerText = "X"
+    deleteButton.classList.add('delButton')
     deleteButton.onclick = function (){
         transactionArray = document.getElementsByClassName('transaction')
         itemIndex = getElIndex(transactionArray, this.parentElement)
@@ -371,10 +379,14 @@ function generateTransactionDiv(buttEl, data){
 
     }
 
+    transactionData = document.createElement('div')
+    transactionData.classList.add('tranData')
     
-    newTransaction.appendChild(categoryP)
-    newTransaction.appendChild(descriptionP)
-    newTransaction.appendChild(amountP)
+    transactionData.appendChild(categoryP)
+    transactionData.appendChild(descriptionP)
+    transactionData.appendChild(amountP)
+
+    newTransaction.appendChild(transactionData)
     newTransaction.appendChild(deleteButton)
 
 
