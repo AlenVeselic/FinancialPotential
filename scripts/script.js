@@ -98,7 +98,10 @@ setDateHeader()
 //creates the add transaction button
 
 addButton = document.createElement('button')
-addButton.innerHTML = "+"
+imageAdd = document.createElement('img')
+imageAdd.src = "assets/buttAdd.png"
+addButton.appendChild(imageAdd)
+//addButton.innerHTML = "+"
 addButton.id = "addTran"
 addButton.onclick = function(){
 
@@ -339,9 +342,11 @@ function generateTransactionDiv(buttEl, data){
     backgroundColour = allCats[data[0]]
 
     if(backgroundColour != null){
-        newTransaction.style.backgroundColor = backgroundColour.toString()
+        newTransaction.style.color = backgroundColour.toString()
+        newTransaction.style.borderBottomColor = backgroundColour.toString()
     }else{
-        newTransaction.style.backgroundColor = "#" + bkgColor()
+        newTransaction.style.color = "#" + bkgColor()
+        newTransaction.style.borderBottomColor = "#" + bkgColor()
     }
 
     categoryNode = document.createTextNode(data[0])
