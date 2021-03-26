@@ -5,6 +5,7 @@
  * @version 1.0.0
  */
 
+
 function clearTranDivs(){
     transactionDivs = document.getElementsByClassName('transaction')
     while(transactionDivs.length != 0){
@@ -12,7 +13,7 @@ function clearTranDivs(){
     }
 }
     
-
+// displays all transactions for the current day
 function genTrans(){
 
     if(document.getElementsByClassName('transaction').length != 0){
@@ -20,21 +21,21 @@ function genTrans(){
 }
     
 
-    date = document.getElementById("date").innerText
+    var date = getHeaderDate()
     
-    rawData = localStorage.getItem(date)
+    var rawData = localStorage.getItem(date)
 
     if(rawData == null){
         return;
     }
     
-    data = JSON.parse(rawData)
+    var data = JSON.parse(rawData)
     
     
-    addButton = document.getElementById('addTran')
+    var addButton = document.getElementById('addTran')
 
-    for(i=0; i < data['transactions'].length; i++){
-        curItem = []
+    for(var i=0; i < data['transactions'].length; i++){
+        let curItem = []
         curItem.push(data['transactions'][i]['category'])
         curItem.push(data['transactions'][i]['description'])
         curItem.push(data['transactions'][i]['amount'])
@@ -76,6 +77,11 @@ function compareDateWithPresent(date){
     return false;
 }
 
+//get date from header
+function getHeaderDate(){
+    return document.getElementById("date").innerText
+}
+
 function setDateHeader(){
 curDate = new Date()
 
@@ -95,11 +101,16 @@ genTrans()
 
 setDateHeader()
 
+if(JSON.parse(localStorage.getItem(getHeaderDate()))['transactions'].length > 0){
+    dayStats()
+}
+
+
 //creates the add transaction button
 
 addButton = document.createElement('button')
 imageAdd = document.createElement('img')
-imageAdd.src = "assets/buttAdd.png"
+imageAdd.src = "assets/buttAdd2.png"
 addButton.appendChild(imageAdd)
 //addButton.innerHTML = "+"
 addButton.id = "addTran"
@@ -127,6 +138,7 @@ function dateForward(){
 
 currentContents.appendChild(addButton);
 
+// generates the prompt to add a transaction
 function openInput(buttEl){
 
     inputDiv = document.createElement('div')
@@ -138,7 +150,8 @@ function openInput(buttEl){
     cancelButton = document.createElement('button')
     cancelButton.innerHTML = "Back"
     cancelButton.onclick = function(){
-        inputDiv.remove();
+        dayStats()
+        inputDiv.remove()
     }
 
     windowP = document.createElement('h3')
@@ -260,6 +273,7 @@ function openInput(buttEl){
 
         data = [cat, desc, amount]
         createTransaction(buttEl ,data)
+        dayStats()
         inputDiv.remove()
     }
 
@@ -332,7 +346,7 @@ for(element of nList){
 }
 
 
-
+// generates a single transaction div
 function generateTransactionDiv(buttEl, data){
 
     newTransaction = document.createElement('div')
@@ -399,4 +413,33 @@ function generateTransactionDiv(buttEl, data){
     transactionDate = document.getElementById('date').innerText
 
     currentContents.insertBefore(newTransaction, buttEl)
+}
+
+function getDaySpent(){
+    var date = getHeaderDate()
+
+    var data = JSON.parse(localStorage.getItem(date))
+    var sumAmount = 0.0
+    for(transaction of data['transactions']){
+        sumAmount += parseFloat(transaction['amount'])
+    }
+    return sumAmount
+}
+
+
+function dayStats(){
+
+    var moneySpentToday = getDaySpent()
+
+    var daySpentP = document.createElement('p')
+    daySpentP.appendChild(document.createTextNode(moneySpentToday))
+    daySpentP.id="spentInDay"
+
+    var existCheck = document.getElementById("spentInDay")
+    if(existCheck === null){
+        document.getElementsByClassName('dayStats')[0].appendChild(daySpentP)
+    }else{
+        document.getElementsByClassName('dayStats')[0].replaceChild(daySpentP, existCheck)
+    }
+
 }
