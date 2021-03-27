@@ -97,13 +97,15 @@ if (compareDateWithPresent(curDate)){
 
 document.getElementById('date').innerHTML = curDate.getDate() + ". " + (curDate.getMonth() + 1) + ". " + curDate.getFullYear()
 genTrans()
+dayStats()
 }
 
 setDateHeader()
 
-if(JSON.parse(localStorage.getItem(getHeaderDate()))['transactions'].length > 0){
-    dayStats()
-}
+
+    
+
+
 
 
 //creates the add transaction button
@@ -141,137 +143,175 @@ currentContents.appendChild(addButton);
 // generates the prompt to add a transaction
 function openInput(buttEl){
 
-    inputDiv = document.createElement('div')
+    // base wrapper div creation and class assignment
+    var inputDiv = document.createElement('div')
     inputDiv.classList.add('promptWindow')
 
-    basicInput = document.createElement('div')
+    // main basic div creation
+    var basicInput = document.createElement('div')
     
-
-    cancelButton = document.createElement('button')
+    // cancel/back button creation and initiation
+    var cancelButton = document.createElement('button')
     cancelButton.innerHTML = "Back"
+    cancelButton.classList.add('backButton')
+
+    // on cancellation the prompt closes(removes the div from the window)
     cancelButton.onclick = function(){
-        dayStats()
         inputDiv.remove()
     }
 
-    windowP = document.createElement('h3')
-    windowText = document.createTextNode('New transaction')
+    // prompt window title creation, initiation and appending
+    var windowP = document.createElement('h3')
+    var windowText = document.createTextNode('New transaction')
     windowP.appendChild(windowText)
 
     basicInput.appendChild(windowP)
 
-    transactionForm = document.createElement('form')
+    // input form creation
+    var transactionForm = document.createElement('form')
     transactionForm.name = "inputForm"
 
-    categorySelection = document.createElement('select')
+    // category component creation
+    var categorySelection = document.createElement('select')
     categorySelection.name = "categories"
 
-    elPCategory = document.createElement('p')
-    elTextCategory = document.createTextNode('Category: ')
+    // category component label creation
+    var elPCategory = document.createElement('p')
+    var elTextCategory = document.createTextNode('Category: ')
     elPCategory.appendChild(elTextCategory)
 
+    // category option generation
     generateCategories(categorySelection)
 
+    // appends both label and category 
     transactionForm.appendChild(elPCategory)
     transactionForm.appendChild(categorySelection)
 
-    descEntry = document.createElement('input')
+    // short description component and label creation
+    var descEntry = document.createElement('input')
     descEntry.name = "description"
     descEntry.type = "text"
 
-    elPDesc = document.createElement('p')
-    elTextDesc = document.createTextNode('Short description: (optional)')
+    var elPDesc = document.createElement('p')
+    var elTextDesc = document.createTextNode('Short description: (optional)')
     elPDesc.appendChild(elTextDesc)
 
     transactionForm.appendChild(elPDesc)
     transactionForm.appendChild(descEntry)
 
-    amountEntry = document.createElement('input')
+    // currency amount component and label creation
+    var amountEntry = document.createElement('input')
     amountEntry.name = "amount"
     amountEntry.type = "number"
-    amountEntry.step = "0.01"
+    amountEntry.step = "0.01" // this decides the amount's step/accuracy
 
-    elPAmount = document.createElement('p')
-    elTextAmount = document.createTextNode('Amount: ')
+    var elPAmount = document.createElement('p')
+    var elTextAmount = document.createTextNode('Amount: ')
     elPAmount.appendChild(elTextAmount)
     
     transactionForm.appendChild(elPAmount)
     transactionForm.appendChild(amountEntry)
 
-    optionsButton = document.createElement('button')
+    /* options button creation
+       this button toggles the display of the transaction config on the prompt window */
+    var optionsButton = document.createElement('button')
     optionsButton.innerText = "..."
     optionsButton.onclick = function (){
         document.getElementsByClassName('inputOptions')[0].classList.toggle('show')
     }
 
-    optionsDiv = document.createElement('div')
+    /* base options div creation */
+    var optionsDiv = document.createElement('div')
     optionsDiv.classList.add('inputOptions')
 
-    labelCatSection = document.createElement('h4')
-    labelTextCatSection = document.createTextNode('Categories')
+    /* Category option configuration section creation */
+    var labelCatSection = document.createElement('h4')
+    var labelTextCatSection = document.createTextNode('Categories')
     labelCatSection.appendChild(labelTextCatSection)
 
-    lineCatSection = document.createElement('hr')
+    var lineCatSection = document.createElement('hr')
 
     optionsDiv.appendChild(labelCatSection)
     optionsDiv.appendChild(lineCatSection)
 
-    categoryName = document.createElement("input")
+    // category name input and label creation
+    var categoryName = document.createElement("input")
     categoryName.type = "text"
     categoryName.name = "catName"
 
-    labelPCatMod = document.createElement('p')
-    labelTextCatMod = document.createTextNode('Enter category to add/remove:')
+    var labelPCatMod = document.createElement('p')
+    var labelTextCatMod = document.createTextNode('Enter category to add/remove:')
     labelPCatMod.appendChild(labelTextCatMod)
 
-    categoryColor = document.createElement('input')
-    categoryColor.type = "color"
+    //category color input and label creation
+
+    // TODO: Decide wether I want to give users free reign over color choice or make a set list of colors to choose from
+
+    var categoryColor = document.createElement('input')
+    categoryColor.type = "color" /* here I use the color input type, at first just to see how it works
+    this is subject to change since you can choose some pretty bad colors by yourself */
     categoryColor.name = "catColor"
 
-    labelCatColor = document.createElement('p')
-    labelTextCatColor = document.createTextNode('Choose a color for this category:')
+    var labelCatColor = document.createElement('p')
+    var labelTextCatColor = document.createTextNode('Choose a color for this category:')
     labelCatColor.appendChild(labelTextCatColor)
 
+    // appending everything to the options portion of the prompt window
     optionsDiv.appendChild(labelPCatMod)
     optionsDiv.appendChild(categoryName)
     optionsDiv.appendChild(labelCatColor)
     optionsDiv.appendChild(categoryColor)
 
-    removeCatButton = document.createElement('button')
+    /* remove category button creation
+     gets category value from text input, removes it from storage and refreshes the options in the menu in basic input */
+
+    // TODO: separate deletion and addition, so that deletion has you chose the categories from a menu  to avoid false input chances from the text field
+
+    var removeCatButton = document.createElement('button')
     removeCatButton.innerText = "Remove Category"
     removeCatButton.onclick = function(){
-        category = document.getElementsByName("catName")[0].value
+        let category = document.getElementsByName("catName")[0].value
         removeCategoryFromStorage(category)
         generateCategories(document.getElementsByName('categories')[0])
 
     }
 
-    // initializes the category submit button
+    /* category addition button creation
+        The button takes the chosen name and category, sends them into storage and refreshes the category menu with the fresh category */
 
-    addCatButton = document.createElement('button')
+    var addCatButton = document.createElement('button')
     addCatButton.innerText = "Add Category"
     addCatButton.onclick = function(){
-            newCategory = document.getElementsByName("catName")[0].value
-            catColor = document.getElementsByName('catColor')[0].value
+            let newCategory = document.getElementsByName("catName")[0].value
+            let catColor = document.getElementsByName('catColor')[0].value
             addCategoryToStorage(newCategory, catColor)
             generateCategories(document.getElementsByName('categories')[0])
             
         }
+    
+    // append both buttons
     optionsDiv.appendChild(addCatButton)
     optionsDiv.appendChild(removeCatButton)
-
+    
+    // append base form to input div
     basicInput.appendChild(transactionForm)
 
-    //inputDiv.innerHTML += "Current values: " + cat + " " + desc + " " + amount.toString()
+    /* 
+        Apply button creation
+        It takes the chosen category, written short description and given amount, with these values creating a new transaction, reevaluating the day's stats
+        and closing the prompt.
 
+        TODO: input validation, category and amount should be required 
+    */
     applyButton = document.createElement('button')
+    applyButton.classList.add('addButton')
     applyButton.innerHTML = "Add"
     applyButton.onclick = function(){
-        cat = document.forms["inputForm"]["categories"].value
-        desc = document.forms["inputForm"]["description"].value
-        amount = document.forms["inputForm"]["amount"].value  
+        let cat = document.forms["inputForm"]["categories"].value
+        let desc = document.forms["inputForm"]["description"].value
+        let amount = document.forms["inputForm"]["amount"].value  
 
-        data = [cat, desc, amount]
+        let data = [cat, desc, amount]
         createTransaction(buttEl ,data)
         dayStats()
         inputDiv.remove()
@@ -279,17 +319,20 @@ function openInput(buttEl){
 
     
 
-
+// appends all buttons to basic input
 basicInput.appendChild(cancelButton)
 
 basicInput.appendChild(applyButton)
 
 basicInput.appendChild(optionsButton)
 
+
+// appends both big sections to the prompt window
 inputDiv.appendChild(basicInput)
 
 inputDiv.appendChild(optionsDiv)
 
+// after creating everything the prompt window materializes in front of the user ready for input
 
 document.body.appendChild(inputDiv)
 
@@ -420,8 +463,15 @@ function getDaySpent(){
 
     var data = JSON.parse(localStorage.getItem(date))
     var sumAmount = 0.0
-    for(transaction of data['transactions']){
-        sumAmount += parseFloat(transaction['amount'])
+    if(data != null){
+        for(transaction of data['transactions']){
+                sumAmount += parseFloat(transaction['amount'])
+            
+        }
+    }
+
+    if(Number.isNaN(sumAmount)){
+        return 0
     }
     return sumAmount
 }

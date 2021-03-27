@@ -280,6 +280,7 @@ p.amount{
 .dayStats{
 
     position: absolute;
+    display:flex;
     bottom: 0px;
 
 }
