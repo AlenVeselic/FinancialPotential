@@ -156,11 +156,95 @@ button:disabled img{
     background-color : gray;
     position : absolute;
     align-self: center;
+
+    background-image: url("../assets/crumpledPaperHD.jpg");
+    background-size: cover;
+
+    padding: 1%;
 }
+
+.inputMain{
+    position:relative;
+}
+
+.promptTitle{
+    text-align: center;
+}
+
+.inputSection{
+    display:flex;
+}
+
+.inputSection input, select{
+    
+    max-height: 20px;
+}
+
+.inputSection select{
+    margin-top: 5%;
+}
+
+.inputSection input{
+    margin-top: 4%;
+}
+
+.configButton{
+    position: absolute;
+    right: 0px;
+    top:0px;
+
+}
+
+.backButton{
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+
+    width:50%;
+}
+
+.addButton{
+    position: absolute;
+    bottom: 0px;
+    right:0px;
+
+    width:50%;
+}
+
 
 .inputOptions{
     display: none;
+    
+
+    padding: 1%;
 }
+
+.inputOptions input{
+    margin-top: 3.25%;
+}
+
+.inputOptions input[type = color]{
+    margin-top: 3.5%;
+}
+
+.catConfig{
+    position:relative;
+}
+
+.addCat{
+    position: absolute;
+    left: 0px;
+
+    width: 50%;
+}
+
+.remCat{
+    position: absolute;
+    right:0px;
+
+    width: 50%;
+}
+
 
 .show{
     display:block;

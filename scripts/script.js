@@ -143,26 +143,21 @@ currentContents.appendChild(addButton);
 // generates the prompt to add a transaction
 function openInput(buttEl){
 
+    // MAIN INPUT DIV SECTION //
+
     // base wrapper div creation and class assignment
     var inputDiv = document.createElement('div')
     inputDiv.classList.add('promptWindow')
 
     // main basic div creation
     var basicInput = document.createElement('div')
-    
-    // cancel/back button creation and initiation
-    var cancelButton = document.createElement('button')
-    cancelButton.innerHTML = "Back"
-    cancelButton.classList.add('backButton')
-
-    // on cancellation the prompt closes(removes the div from the window)
-    cancelButton.onclick = function(){
-        inputDiv.remove()
-    }
+    basicInput.classList.add('inputMain')
 
     // prompt window title creation, initiation and appending
     var windowP = document.createElement('h3')
     var windowText = document.createTextNode('New transaction')
+    windowP.classList.add('promptTitle')
+
     windowP.appendChild(windowText)
 
     basicInput.appendChild(windowP)
@@ -172,6 +167,10 @@ function openInput(buttEl){
     transactionForm.name = "inputForm"
 
     // category component creation
+
+    var categoryOptDiv = document.createElement('div')
+    categoryOptDiv.classList.add('categorySection', 'inputSection')
+
     var categorySelection = document.createElement('select')
     categorySelection.name = "categories"
 
@@ -184,22 +183,39 @@ function openInput(buttEl){
     generateCategories(categorySelection)
 
     // appends both label and category 
-    transactionForm.appendChild(elPCategory)
-    transactionForm.appendChild(categorySelection)
+
+    categoryOptDiv.appendChild(elPCategory)
+    categoryOptDiv.appendChild(categorySelection)
+
+    transactionForm.appendChild(categoryOptDiv)
+
 
     // short description component and label creation
+
+    var descDiv = document.createElement('div')
+    descDiv.classList.add('descSection', 'inputSection')
+
     var descEntry = document.createElement('input')
     descEntry.name = "description"
     descEntry.type = "text"
+    descEntry.placeholder = "(optional)"
 
     var elPDesc = document.createElement('p')
-    var elTextDesc = document.createTextNode('Short description: (optional)')
+    var elTextDesc = document.createTextNode('Short description: ')
     elPDesc.appendChild(elTextDesc)
 
-    transactionForm.appendChild(elPDesc)
-    transactionForm.appendChild(descEntry)
+
+
+    descDiv.appendChild(elPDesc)
+    descDiv.appendChild(descEntry)
+
+    transactionForm.appendChild(descDiv)
 
     // currency amount component and label creation
+
+    var amountDiv = document.createElement('div')
+    amountDiv.classList.add('amDiv', 'inputSection')
+
     var amountEntry = document.createElement('input')
     amountEntry.name = "amount"
     amountEntry.type = "number"
@@ -208,44 +224,54 @@ function openInput(buttEl){
     var elPAmount = document.createElement('p')
     var elTextAmount = document.createTextNode('Amount: ')
     elPAmount.appendChild(elTextAmount)
-    
-    transactionForm.appendChild(elPAmount)
-    transactionForm.appendChild(amountEntry)
 
-    /* options button creation
-       this button toggles the display of the transaction config on the prompt window */
-    var optionsButton = document.createElement('button')
-    optionsButton.innerText = "..."
-    optionsButton.onclick = function (){
-        document.getElementsByClassName('inputOptions')[0].classList.toggle('show')
-    }
+    amountDiv.appendChild(elPAmount)
+    amountDiv.appendChild(amountEntry)
+
+    transactionForm.appendChild(amountDiv)
+
+    // OPTIONS DIV SECTION //
 
     /* base options div creation */
     var optionsDiv = document.createElement('div')
     optionsDiv.classList.add('inputOptions')
 
     /* Category option configuration section creation */
+    var divCat = document.createElement('div')
+    divCat.classList.add('catConfig')
+
     var labelCatSection = document.createElement('h4')
+    labelCatSection.classList.add('promptTitle')
+
     var labelTextCatSection = document.createTextNode('Categories')
     labelCatSection.appendChild(labelTextCatSection)
 
     var lineCatSection = document.createElement('hr')
 
-    optionsDiv.appendChild(labelCatSection)
-    optionsDiv.appendChild(lineCatSection)
+    divCat.appendChild(labelCatSection)
+    divCat.appendChild(lineCatSection)
 
     // category name input and label creation
+    var divCatMod = document.createElement('div')
+    divCatMod.classList.add('inputSection')
+
     var categoryName = document.createElement("input")
     categoryName.type = "text"
     categoryName.name = "catName"
 
-    var labelPCatMod = document.createElement('p')
+    var labelCatMod = document.createElement('p')
     var labelTextCatMod = document.createTextNode('Enter category to add/remove:')
-    labelPCatMod.appendChild(labelTextCatMod)
+    labelCatMod.appendChild(labelTextCatMod)
+
+    divCatMod.appendChild(labelCatMod)
+    divCatMod.appendChild(categoryName)
 
     //category color input and label creation
 
     // TODO: Decide wether I want to give users free reign over color choice or make a set list of colors to choose from
+
+    var divCatColor = document.createElement('div')
+    divCatColor.classList.add('inputSection')
 
     var categoryColor = document.createElement('input')
     categoryColor.type = "color" /* here I use the color input type, at first just to see how it works
@@ -256,11 +282,14 @@ function openInput(buttEl){
     var labelTextCatColor = document.createTextNode('Choose a color for this category:')
     labelCatColor.appendChild(labelTextCatColor)
 
+    divCatColor.appendChild(labelCatColor)
+    divCatColor.appendChild(categoryColor)
+
     // appending everything to the options portion of the prompt window
-    optionsDiv.appendChild(labelPCatMod)
-    optionsDiv.appendChild(categoryName)
-    optionsDiv.appendChild(labelCatColor)
-    optionsDiv.appendChild(categoryColor)
+    divCat.appendChild(divCatMod)
+    divCat.appendChild(divCatColor)
+
+    
 
     /* remove category button creation
      gets category value from text input, removes it from storage and refreshes the options in the menu in basic input */
@@ -268,6 +297,7 @@ function openInput(buttEl){
     // TODO: separate deletion and addition, so that deletion has you chose the categories from a menu  to avoid false input chances from the text field
 
     var removeCatButton = document.createElement('button')
+    removeCatButton.classList.add('remCat')
     removeCatButton.innerText = "Remove Category"
     removeCatButton.onclick = function(){
         let category = document.getElementsByName("catName")[0].value
@@ -280,6 +310,7 @@ function openInput(buttEl){
         The button takes the chosen name and category, sends them into storage and refreshes the category menu with the fresh category */
 
     var addCatButton = document.createElement('button')
+    addCatButton.classList.add('addCat')
     addCatButton.innerText = "Add Category"
     addCatButton.onclick = function(){
             let newCategory = document.getElementsByName("catName")[0].value
@@ -290,8 +321,10 @@ function openInput(buttEl){
         }
     
     // append both buttons
-    optionsDiv.appendChild(addCatButton)
-    optionsDiv.appendChild(removeCatButton)
+    divCat.appendChild(addCatButton)
+    divCat.appendChild(removeCatButton)
+
+    optionsDiv.appendChild(divCat)
     
     // append base form to input div
     basicInput.appendChild(transactionForm)
@@ -304,11 +337,16 @@ function openInput(buttEl){
         TODO: input validation, category and amount should be required 
     */
     applyButton = document.createElement('button')
-    applyButton.classList.add('addButton')
+    applyButton.classList.add('addButton', 'mainInput')
     applyButton.innerHTML = "Add"
     applyButton.onclick = function(){
         let cat = document.forms["inputForm"]["categories"].value
-        let desc = document.forms["inputForm"]["description"].value
+        let desc;
+        if(document.forms["inputForm"]["description"].value != "(optional)"){
+        desc = document.forms["inputForm"]["description"].value
+        }else{
+        desc = ""
+        }
         let amount = document.forms["inputForm"]["amount"].value  
 
         let data = [cat, desc, amount]
@@ -317,42 +355,59 @@ function openInput(buttEl){
         inputDiv.remove()
     }
 
+    // cancel/back button creation and initiation
+    var cancelButton = document.createElement('button')
+    cancelButton.innerHTML = "Back"
+    cancelButton.classList.add('backButton', 'mainInput')
+
+    // on cancellation the prompt closes(removes the div from the window)
+    cancelButton.onclick = function(){
+        inputDiv.remove()
+    }
+
+    /* options button creation
+       this button toggles the display of the transaction config on the prompt window */
+       var optionsButton = document.createElement('button')
+       optionsButton.innerText = "..."
+       optionsButton.classList.add('configButton')
+       optionsButton.onclick = function (){
+           document.getElementsByClassName('inputOptions')[0].classList.toggle('show')
+       }
+
+    // appends all buttons to basic input
+
     
-
-// appends all buttons to basic input
-basicInput.appendChild(cancelButton)
-
-basicInput.appendChild(applyButton)
-
-basicInput.appendChild(optionsButton)
+    basicInput.appendChild(cancelButton)
+    basicInput.appendChild(applyButton)
+    basicInput.appendChild(optionsButton)
 
 
-// appends both big sections to the prompt window
-inputDiv.appendChild(basicInput)
+    // appends both big sections to the prompt window
+    inputDiv.appendChild(basicInput)
 
-inputDiv.appendChild(optionsDiv)
+    inputDiv.appendChild(optionsDiv)
 
-// after creating everything the prompt window materializes in front of the user ready for input
+    // after creating everything the prompt window materializes in front of the user ready for input
 
-document.body.appendChild(inputDiv)
+    document.body.appendChild(inputDiv)
 
 }
 
 function generateCategories(selectEl){
 
-    optionElements = selectEl.getElementsByTagName('option')
+    var optionElements = selectEl.getElementsByTagName('option')
         while(optionElements.length != 0){
             selectEl.getElementsByTagName('option')[0].remove()
         }
     
 
-    categoryList = JSON.parse(localStorage.getItem('categories'))
+    var categoryList = JSON.parse(localStorage.getItem('categories'))
 
 
 
     if(categoryList.length != 0){
         for(category of Object.keys(categoryList)){
-            newOption = document.createElement('option')
+            let newOption = document.createElement('option')
             newOption.value = category
             newOption.innerText = category
             selectEl.appendChild(newOption)
