@@ -21,7 +21,7 @@ function genTrans(){
 }
     
 
-    var date = getHeaderDate()
+    var date = sessionStorage.getItem('setDate')
     
     var rawData = localStorage.getItem(date)
 
@@ -46,6 +46,28 @@ function genTrans(){
 
 
 }
+
+//creates the add transaction button
+var currentContents = document.getElementById('content')
+
+
+addButton = document.createElement('button')
+imageAdd = document.createElement('img')
+imageAdd.src = "assets/buttAdd2.png"
+addButton.appendChild(imageAdd)
+//addButton.innerHTML = "+"
+addButton.id = "addTran"
+addButton.onclick = function(){
+
+    if(document.getElementsByClassName('promptWindow').length == 0){
+    openInput(this);
+    }else{
+        document.getElementsByClassName('promptWindow')[0].remove()
+    }
+
+}
+
+currentContents.appendChild(addButton);
 
 
 
@@ -82,12 +104,11 @@ function getHeaderDate(){
     return document.getElementById("date").innerText
 }
 
-function setDateHeader(){
-curDate = new Date()
+function setDateHeader(date){
+var curDate = new Date(date)
 
 curDate.setDate(curDate.getDate() + daysBack)
-
-currentContents = document.getElementById('content')
+sessionStorage.setItem("setDate", curDate.toDateString())
 
 if (compareDateWithPresent(curDate)){
     document.getElementById('dateForward').disabled = true
@@ -96,49 +117,31 @@ if (compareDateWithPresent(curDate)){
 }
 
 document.getElementById('date').innerHTML = curDate.getDate() + ". " + (curDate.getMonth() + 1) + ". " + curDate.getFullYear()
+
 genTrans()
 dayStats()
 }
 
-setDateHeader()
-
-
-    
-
-
-
-
-//creates the add transaction button
-
-addButton = document.createElement('button')
-imageAdd = document.createElement('img')
-imageAdd.src = "assets/buttAdd2.png"
-addButton.appendChild(imageAdd)
-//addButton.innerHTML = "+"
-addButton.id = "addTran"
-addButton.onclick = function(){
-
-    if(document.getElementsByClassName('promptWindow').length == 0){
-    openInput(this);
-    }else{
-        document.getElementsByClassName('promptWindow')[0].remove()
-    }
-
-}
-
 function dateBack(){
-    daysBack -=  1
-    setDateHeader()
+    prevDate = new Date(sessionStorage.getItem("setDate"))
+    prevDate.setDate(prevDate.getDate() - 1)
+    setDateHeader(prevDate)
 
 }
 
 function dateForward(){
-    daysBack += 1
-    setDateHeader()
+    nextDate = new Date(sessionStorage.getItem("setDate"))
+    nextDate.setDate(nextDate.getDate() + 1)
+    setDateHeader(nextDate)
 }
 
 
-currentContents.appendChild(addButton);
+if(sessionStorage.getItem("setDate") == null){
+setDateHeader(new Date())
+}else{
+    setDateHeader(new Date(sessionStorage.getItem("setDate")))
+}
+
 
 // generates the prompt to add a transaction
 function openInput(buttEl){
@@ -421,7 +424,7 @@ function createTransaction(buttEl, data){
     
     generateTransactionDiv(buttEl, data)
 
-    addTransactionToStorage(transactionDate, data)
+    addTransactionToStorage(sessionStorage.getItem('setDate'), data)
 
     
 
@@ -505,10 +508,6 @@ function generateTransactionDiv(buttEl, data){
 
     newTransaction.appendChild(transactionData)
     newTransaction.appendChild(deleteButton)
-
-
-
-    transactionDate = document.getElementById('date').innerText
 
     currentContents.insertBefore(newTransaction, buttEl)
 }

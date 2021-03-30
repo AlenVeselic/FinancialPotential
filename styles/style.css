@@ -8,7 +8,7 @@
 
 
 
- body{
+body{
 
     font-family: 'Syne Mono', monospace;
 
@@ -19,7 +19,6 @@
     background-color: rgb(163, 118, 33);
     background-image: url("../assets/tableWoodHD.jpg");
     background-size: cover;
-    background-repeat: no-repeat;
     
 
     display:flex;
@@ -46,7 +45,7 @@ h1, p{
 /*
 Remove all button styling
 */
- button, input[type="submit"], input[type="reset"] {
+ button, input[type="submit"], input[type="reset"]{
 	background: none;
 	color: inherit;
 	border: none;
@@ -94,10 +93,9 @@ Remove all button styling
 }
 
 .navArrow img{
-    height: 10vh;
-    min-height:20px;
+    min-height:60px;
     width:4vw;
-    min-width:30px;
+    min-width:40px;
     
 }
 
@@ -143,6 +141,8 @@ button:disabled img{
     display:inline-block;
     line-height: 55px;
     text-align: center;
+
+    font-size: 4vh;
 
     
     
@@ -253,7 +253,7 @@ button:disabled img{
 #middle{
     display:flex;
     flex-direction: row;
-    min-height:90vh;
+    min-height:93.2vh;
 }
 
 .transaction{
