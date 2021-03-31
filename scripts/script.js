@@ -6,26 +6,27 @@
  */
 
 
+// clears all displayed transaction divs
 function clearTranDivs(){
-    transactionDivs = document.getElementsByClassName('transaction')
+    var transactionDivs = document.getElementsByClassName('transaction')
     while(transactionDivs.length != 0){
         transactionDivs[0].remove()
     }
 }
     
-// displays all transactions for the current day
+// refreshes displayed transaction divs
 function genTrans(){
 
     if(document.getElementsByClassName('transaction').length != 0){
-    clearTranDivs()
-}
+        clearTranDivs()
+    }
     
 
     var date = sessionStorage.getItem('setDate')
     
     var rawData = localStorage.getItem(date)
 
-    if(rawData == null){
+    if(rawData == null){ // if the given date has no transactions, the process is cut short
         return;
     }
     
@@ -47,17 +48,18 @@ function genTrans(){
 
 }
 
-//creates the add transaction button
+//creates and appends the add transaction button
 var currentContents = document.getElementById('content')
 
 
-addButton = document.createElement('button')
-imageAdd = document.createElement('img')
+var addButton = document.createElement('button')
+
+var imageAdd = document.createElement('img')
 imageAdd.src = "assets/buttAdd2.png"
 addButton.appendChild(imageAdd)
-//addButton.innerHTML = "+"
+
 addButton.id = "addTran"
-addButton.onclick = function(){
+addButton.onclick = function(){ //toggles the prompt window
 
     if(document.getElementsByClassName('promptWindow').length == 0){
     openInput(this);
@@ -71,11 +73,12 @@ currentContents.appendChild(addButton);
 
 
 
-function bkgColor(){
+function bkgColor(){ // generates a random color
     return Math.floor(Math.random() * 16777215).toString(16)
 }
 
-daysBack = 0
+// creates and appends the forward and backward nav buttons for navigation by the day
+// TODO: implement different movement methods(by month?, week?, user number choice?)
 
 backButton = document.getElementById('dateBack')
 backButton.onclick = function(){
@@ -87,6 +90,8 @@ forwardButton.onclick = function(){
     dateForward()
 }
 
+// checks wether a given date is equal to the present date
+// TODO: either delete this one or the clone on in calendarScript
 function compareDateWithPresent(date){
     present = new Date()
     flags = 0
@@ -100,14 +105,16 @@ function compareDateWithPresent(date){
 }
 
 //get date from header
+// TODO: make this function obsolete and replace all its appearances with the sessionStorage variable
 function getHeaderDate(){
     return document.getElementById("date").innerText
 }
 
+//sets the inner date, the date displayed and refreshes all other displaying mechanisms(transactions, statistics) to match the new date
 function setDateHeader(date){
 var curDate = new Date(date)
 
-curDate.setDate(curDate.getDate() + daysBack)
+
 sessionStorage.setItem("setDate", curDate.toDateString())
 
 if (compareDateWithPresent(curDate)){
@@ -122,6 +129,8 @@ genTrans()
 dayStats()
 }
 
+// by day date manipulation functions
+
 function dateBack(){
     prevDate = new Date(sessionStorage.getItem("setDate"))
     prevDate.setDate(prevDate.getDate() - 1)
@@ -135,10 +144,10 @@ function dateForward(){
     setDateHeader(nextDate)
 }
 
-
-if(sessionStorage.getItem("setDate") == null){
+// onload date setting function
+if(sessionStorage.getItem("setDate") == null){// if no date is saved, the index window displays today's date
 setDateHeader(new Date())
-}else{
+}else{ // else it displays the last one the user worked on
     setDateHeader(new Date(sessionStorage.getItem("setDate")))
 }
 
@@ -396,6 +405,7 @@ function openInput(buttEl){
 
 }
 
+// refreshes all saved categories as option elements for the window prompt's menu
 function generateCategories(selectEl){
 
     var optionElements = selectEl.getElementsByTagName('option')
@@ -419,6 +429,8 @@ function generateCategories(selectEl){
 
 }
 
+// generates a div for the created transaction and save said transaction into the appropriate local storage location
+
 function createTransaction(buttEl, data){
 
     
@@ -429,6 +441,8 @@ function createTransaction(buttEl, data){
     
 
 }
+
+//gets an element's numeric index from a list of nodes 
 
 function getElIndex(nList, el){
 
@@ -450,47 +464,49 @@ for(element of nList){
 // generates a single transaction div
 function generateTransactionDiv(buttEl, data){
 
-    newTransaction = document.createElement('div')
+    var newTransaction = document.createElement('div')
     newTransaction.classList.add('transaction')
 
-    allCats = JSON.parse(localStorage.getItem('categories'))
-    backgroundColour = allCats[data[0]]
+    //gets that transaction's category and that category's color value
+    var allCats = JSON.parse(localStorage.getItem('categories'))
+    var backgroundColour = allCats[data[0]]
 
-    if(backgroundColour != null){
+    if(backgroundColour != null){//if the cateogry exists, the color styles the appropriate attributes
         newTransaction.style.color = backgroundColour.toString()
         newTransaction.style.borderBottomColor = backgroundColour.toString()
-    }else{
+    }else{ //otherwise the attributes are assigned random colors
+            // TODO: assign default color for non-existent/deleted categories
         newTransaction.style.color = "#" + bkgColor()
         newTransaction.style.borderBottomColor = "#" + bkgColor()
     }
 
-    categoryNode = document.createTextNode(data[0])
-    descNode = document.createTextNode(data[1])
-    amountNode = document.createTextNode(data[2].toString() + "€")
+    // gets all data into their appropriate containers and formats it
+    var categoryNode = document.createTextNode(data[0])
+    var descNode = document.createTextNode(data[1])
+    var amountNode = document.createTextNode(data[2].toString() + "€")
+    //TODO: Implement other currencies
 
-    categoryP = document.createElement('p')
+    var categoryP = document.createElement('p')
     categoryP.appendChild(categoryNode)
     categoryP.classList.add('cat')
 
-    descriptionP = document.createElement('p')
+    var descriptionP = document.createElement('p')
     descriptionP.appendChild(descNode)
     descriptionP.classList.add('desc')
 
-    //creates the paragraph element that would display the transaction's amount
-
-    amountP = document.createElement('p')
+    var amountP = document.createElement('p')
     amountP.appendChild(amountNode)
     amountP.classList.add('amount')
 
-    //create button that deletes the current transaction and it's div
+    //create button that deletes the transaction it is tied to. Both from local storage and the div displaying it
 
-    deleteButton = document.createElement('button')
+    var deleteButton = document.createElement('button')
     deleteButton.innerText = "X"
     deleteButton.classList.add('delButton')
     deleteButton.onclick = function (){
-        transactionArray = document.getElementsByClassName('transaction')
+        let transactionArray = document.getElementsByClassName('transaction')
         itemIndex = getElIndex(transactionArray, this.parentElement)
-        itemDate = document.getElementById('date').innerText
+        let itemDate = new Date(sessionStorage.getItem('setDate')).toDateString()
 
         removeTransactionFromStorage(itemDate, itemIndex)
 
@@ -499,19 +515,23 @@ function generateTransactionDiv(buttEl, data){
 
     }
 
-    transactionData = document.createElement('div')
+    // creates the data section of the transaction
+    var transactionData = document.createElement('div')
     transactionData.classList.add('tranData')
     
     transactionData.appendChild(categoryP)
     transactionData.appendChild(descriptionP)
     transactionData.appendChild(amountP)
 
+    // appends the data and delete button sections to the new transaction
     newTransaction.appendChild(transactionData)
     newTransaction.appendChild(deleteButton)
 
+    // adds the transaction to the content div
     currentContents.insertBefore(newTransaction, buttEl)
 }
 
+// calculates the amount of money spent on the currently displayed day
 function getDaySpent(){
     var date = getHeaderDate()
 
@@ -530,7 +550,7 @@ function getDaySpent(){
     return sumAmount
 }
 
-
+// displays the day's stats
 function dayStats(){
 
     var moneySpentToday = getDaySpent()

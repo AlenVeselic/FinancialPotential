@@ -9,10 +9,41 @@
 <meta name="keywords" content="">
 <link href="styles/style.css" rel="stylesheet" type="text/css">
 
+<!--
+    Main index window for my finance logging web app, on first visiting it opens up a simple view
+    for your current day where you can start adding transactions or traversing day by day or entering
+    calendar view by clicking on the date display on the header.
+
+    TODO: Make button look interactable, right now they are stripped of all style, leaving them to look like
+    mere text you can click on.
+-->
+
+<!--
+    Here I tested out google fonts, font importing by link using a link tag
+-->
 <link rel="preconnect" href="https://fonts.gstatic.com">
 <link href="https://fonts.googleapis.com/css2?family=Lato&family=Syne+Mono&display=swap" rel="stylesheet">
 
 </head>
+
+<!-- 
+    The body consists of a head and a middle area.
+    The head area contains the date and the separate arrows used go forward or backward by a day.
+    If you are on present day you the button to go forward is disabled, since this app is for finance
+    logging and not future transaction planning at the moment.
+
+    The middle area consists of the content and it's empty side areas. Within the content area,
+    the user can view, add or remove their transactions.
+    The transaction font color for each transaction is determined by the category's color which the user chooses on category creation.
+
+    Always at the bottom of the content is where small stats are displayed. At this point that's the sum of
+    money spent on the given day.
+
+    If the viewport reaches a width lesser than 1000px, the site's layout turns mobile. Which, at this point, only
+    makes the nav arrows cover the sides of the middle, making them easier to click and spot on a smaller screen. 
+
+-->
+
 <body>
     <div id="head">
         <button class="navArrow" id="dateBack"><img src="assets/buttHollowArrow.png"></button>
@@ -25,6 +56,9 @@
         </div>
         <div id="content">
             <h1>Transactions</h1>
+            <!--
+                The tranInfo div describes what the contents of each transaction are supposed to represent.
+            -->
             <div class="tranInfo">
                 <div class="tranData">
                     <p class="cat">Category</p>
@@ -32,7 +66,9 @@
                     <p class="amount">Amount</p>  
                 </div>
             </div>
-
+            <!--
+                Stats for the day
+            -->
             <div class="dayStats">
                 <p>Total spent:</p>
             </div>
@@ -43,6 +79,11 @@
     
     </div>
 
+    <!--
+        Imported scripts:
+            script.js - general displaying and interactivity of the app
+            dataScript.js - localStorage updates and data validation
+    -->
     <script src="scripts/script.js" ></script>
     <script src="scripts/dataScript.js">
     </script>

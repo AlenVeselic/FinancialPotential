@@ -6,6 +6,12 @@
  * @version 1.0.0
  */
 
+/*
+    Lay out all the elements in a nice calendar like fashion
+
+    TODO: Styling, there's nothing here beside base positioning, a lot can still be done
+*/
+
 .year{
     max-width: 100vw;
 
@@ -43,6 +49,9 @@
     flex-grow: 1;
 }
 
+/*  
+    Grays out days that haven't passed yet 
+*/
 .futureDay{
     color: rgb(158, 158, 158);
 }

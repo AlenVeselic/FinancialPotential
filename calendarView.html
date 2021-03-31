@@ -12,11 +12,33 @@
  href="">
 
 <link href="styles/calendarStyle.css" rel="stylesheet" type="text/css">
+
+<!--
+    This view allows the user to jump to any date of the year. It's supposed to only allow them to
+    jump to days that have passed, but that hasn't been implemented yet, so the numbers are only
+    grayed out yet still clickable.
+
+    It's entirely Javascript generated since making more than 400 elements would be a pain.
+
+    During it's generation, the Javascript also checks the transactions for each day and
+    colors the day's background that days dominant category color. That is the category
+    that was used the most that day, so If you have 5 'grocery', 3 'hygiene' and 1 'car parts',
+    the day will be colored whatever color the 'grocery' category has stored.
+
+    TODO: Implement rare and regular category discernment
+    TODO: Implement button disabling
+    TODO: Styling
+-->
+
 </head>
 <body>
 
-<button onclick="window.location.href='index.html'"> Back </button>
-    
+<button onclick="window.location.href='index.html'"> Back </button> <!-- Returns the user back to the main window with the date they left it at -->
+
+
+<!--
+    Imports the calendatScript, which generates the entire page
+-->    
 <script src="scripts/calendarScript.js"></script>
 </body>
 </html>

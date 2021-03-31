@@ -6,16 +6,20 @@
  * @version 1.0.0
  */
 
-
-
+/*
+body - sets the main font "Syne Mono", a fine font to match the receipt aesthetic
+    wipes all margins and padding
+    sets base background color and the image that would later cover it
+    sets display type and flex direction to column
+*/
 body{
-
-    font-family: 'Syne Mono', monospace;
 
     margin: 0;
     padding:0;
 
+    font-family: 'Syne Mono', monospace;
     color: black;
+
     background-color: rgb(163, 118, 33);
     background-image: url("../assets/tableWoodHD.jpg");
     background-size: cover;
@@ -24,16 +28,21 @@ body{
     display:flex;
     flex-direction: column;
 
-    
  }
+
 
 
  h1{
+
      text-align: center;
      line-height: 30px;
 
-    
  }
+
+/*
+ h1, p - makes text get cut off and signals the cut of thext with an ellipsis, ultimately making sure 
+ that the text in these tags doesn't overflow out of it's container elements
+*/
 
 h1, p{
     white-space: nowrap;
@@ -43,7 +52,8 @@ h1, p{
 
 
 /*
-Remove all button styling
+Removes all button styling, leaving only text that functions as a button
+TODO: Custom button styling
 */
  button, input[type="submit"], input[type="reset"]{
 	background: none;
@@ -55,11 +65,14 @@ Remove all button styling
 	outline: inherit;
 }
 
+/* Inverts the nav arrow image by the X axis */
 #dateForward img{
 
     transform: scaleX(-1);
     
 }
+
+/* Placeholder classes for future customization and testing */
 
 #dateForward{
 
@@ -71,6 +84,11 @@ Remove all button styling
 
     
 }
+
+/* My first test at making a website more responsive with a media query.
+    This makes the nav arrow buttons cover the content's sides and gives them 
+    a gradient in the direction they're pointing. In order to give the effect of
+    there being something there to go to. */
 
 @media (max-width: 1000px){
     .navArrow{
@@ -92,12 +110,16 @@ Remove all button styling
     }
 }
 
+/*TODO: Replace min height and min width values with relative units*/
 .navArrow img{
     min-height:60px;
     width:4vw;
     min-width:40px;
     
 }
+
+/* if there is an image inside of a disabled button, it gets blurred to 
+    show the user that it's not in use */
 
 button:disabled img{
 
@@ -125,11 +147,6 @@ button:disabled img{
     background:
         linear-gradient(to top,rgba(0, 0, 0, 0) 1%, rgba(0, 0, 0, 0.815));
 
-    /*background-color: rgb(180, 176, 176);
-    border: solid black 5px;
-    border-top:none;*/
-
-
 }
 
     
@@ -148,6 +165,14 @@ button:disabled img{
     
 }
 
+/*
+    Styles the javascript generated prompt window, the user uses to create transactions
+    and configure certain aspects of their database.
+
+    TODO: set the window's min size parameters to relative units
+    TODO: get a sticky note background image, the current one was put in to see what it would look like
+    TODO: Style each input type used
+*/
 .promptWindow{
     display:flex;
     flex-direction: row;
@@ -163,6 +188,8 @@ button:disabled img{
     padding: 1%;
 }
 
+/* The next selectors mess with layout so everything is in proper place */
+
 .inputMain{
     position:relative;
 }
@@ -177,7 +204,7 @@ button:disabled img{
 
 .inputSection input, select{
     
-    max-height: 20px;
+    max-height: 20px; /* TODO: Change to relative units */
 }
 
 .inputSection select{
@@ -187,6 +214,12 @@ button:disabled img{
 .inputSection input{
     margin-top: 4%;
 }
+
+/*
+    Positions the buttons of the prompt window's basic input view
+    
+    TODO: Style buttons
+    */
 
 .configButton{
     position: absolute;
@@ -211,7 +244,12 @@ button:disabled img{
     width:50%;
 }
 
+/*
+    Window prompt configuration options extension layout styling
 
+    TODO: Style config area
+    TODO: Get a matching background image to basic input, but make it divide decisively
+*/
 .inputOptions{
     display: none;
     
@@ -230,6 +268,8 @@ button:disabled img{
 .catConfig{
     position:relative;
 }
+
+/*TODO: Style category removal and addition buttons*/
 
 .addCat{
     position: absolute;
@@ -272,6 +312,10 @@ button:disabled img{
     
 }
 
+/*
+    Transaction addition button positioning
+*/
+
 #addTran{
     width: 100%;
     height: 6%;
@@ -286,6 +330,9 @@ button:disabled img{
     min-height: 20px;
 }
 
+/*  
+    Transaction layout positioning and text overflow prevention and alignment
+*/
 .transaction p{
     margin:0;
     padding:0;
@@ -323,6 +370,10 @@ p.amount{
     padding-left: 10px;
 }
 
+/*  
+    Transaction data positioning
+*/
+
 .tranData{
     display:flex;
     flex-direction: row;
@@ -334,16 +385,21 @@ p.amount{
     
 }
 
-
+/*
+    Transaction delete button size
+    TODO: make size relative
+    TODO: style delete button
+*/
 .delButton{
     height:100%;
     width:10%;
     
-    /*position:relative;
-    bottom: 11px;*/
+    
 }
 
-
+/*
+    Middle area layout
+*/
 
 #middle > .side{
     flex-grow: 1;
@@ -361,6 +417,10 @@ p.amount{
     
 }
 
+/*
+    Current day statistics positioning, below everything
+*/
+
 .dayStats{
 
     position: absolute;
@@ -369,4 +429,6 @@ p.amount{
 
 }
 
-
+/*
+    TODO: Footer
+*/
