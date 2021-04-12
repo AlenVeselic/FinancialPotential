@@ -34,17 +34,20 @@ function genTrans(){
     
     
     var addButton = document.getElementById('addTran')
-
+    //otherwise gets all transactions and displays them
     for(var i=0; i < data['transactions'].length; i++){
+        //encapsulates the currently being generated transaction's data into the curItem variable
         let curItem = []
         curItem.push(data['transactions'][i]['category'])
         curItem.push(data['transactions'][i]['description'])
         curItem.push(data['transactions'][i]['amount'])
+        /*
+        and send the data off into to get generated along with
+        the location/element before which all transactions are generated
+        the add button
+        */
         generateTransactionDiv(addButton, curItem)
     }
-
-
-
 
 }
 
@@ -80,12 +83,12 @@ function bkgColor(){ // generates a random color
 // creates and appends the forward and backward nav buttons for navigation by the day
 // TODO: implement different movement methods(by month?, week?, user number choice?)
 
-backButton = document.getElementById('dateBack')
+var backButton = document.getElementById('dateBack')
 backButton.onclick = function(){
     dateBack()
 }
 
-forwardButton = document.getElementById('dateForward')
+var forwardButton = document.getElementById('dateForward')
 forwardButton.onclick = function(){
     dateForward()
 }
@@ -438,25 +441,21 @@ function createTransaction(buttEl, data){
 
     addTransactionToStorage(sessionStorage.getItem('setDate'), data)
 
-    
-
 }
 
 //gets an element's numeric index from a list of nodes 
 
 function getElIndex(nList, el){
 
-    index = 0
+    var index = 0
 
-for(element of nList){
+    for(element of nList){
 
-    if(element == el){
-            return index
+        if(element == el){
+                return index
+            }
+        index++
         }
-    index++
-    }
-
-
 
 }
 
@@ -533,7 +532,7 @@ function generateTransactionDiv(buttEl, data){
 
 // calculates the amount of money spent on the currently displayed day
 function getDaySpent(){
-    var date = getHeaderDate()
+    var date = sessionStorage.getItem("setDate")
 
     var data = JSON.parse(localStorage.getItem(date))
     var sumAmount = 0.0

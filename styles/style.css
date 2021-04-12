@@ -40,7 +40,7 @@ body{
  }
 
 /*
- h1, p - makes text get cut off and signals the cut of thext with an ellipsis, ultimately making sure 
+ h1, p - makes text get cut off and marks the cut off text with an ellipsis, ultimately making sure 
  that the text in these tags doesn't overflow out of it's container elements
 */
 

@@ -18,11 +18,11 @@ if(localStorage.getItem('categories') == null){
 // logs a transaction for a given date, checks wether the date exists in the base and creates/overwrites the transaction list with this new transaction
 function addTransactionToStorage(date, data){
 
-    item = {category: data[0], description: data[1], amount:data[2]}
+    var item = {category: data[0], description: data[1], amount:data[2]}
 
-    itemList = JSON.parse(localStorage.getItem(date))
+    var itemList = JSON.parse(localStorage.getItem(date))
     if(itemList == null){
-        itemList = {}
+        let itemList = {}
         itemList["transactions"] = []
     }
     
@@ -41,7 +41,7 @@ function checkDate(date, modType){
 
 
     if(localStorage.getItem("transactionDates") == "" || localStorage.getItem("transactionDates") == null){
-        transactionDates = []
+        var transactionDates = []
         }else{
         transactionDates = localStorage.getItem("transactionDates").split(",")
         }
